@@ -96,4 +96,9 @@ public class GameManager : MonoBehaviour
         Evaluate_results();
         ScoreManager.UpdateScore();
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
