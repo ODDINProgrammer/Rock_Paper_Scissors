@@ -4,49 +4,54 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum Choice { Rock, Paper, Scissors}
+    public enum Choice { Rock, Paper, Scissors }
 
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject AI_GO;
 
-    private AI AI_control;
+    private AI AI_Manager;
+    internal Score ScoreManager;
+
     private Choice player_choice;
     public Choice ai_choice;
 
     private void Start()
     {
-        AI_control = GetComponent<AI>();
+        AI_Manager = GetComponent<AI>();
+        ScoreManager = GetComponent<Score>();
     }
     public void Round_start(Choice received_player_choice)
     {
-        ai_choice = AI_control.AI_make_choice();
+        ai_choice = AI_Manager.AI_make_choice();
         player_choice = received_player_choice;
 
         Player.GetComponent<_AnimationController>().Play_Animation();
         AI_GO.GetComponent<_AnimationController>().Play_Animation();
 
-        Evaluate_results();
+        StartCoroutine(Results_and_display_after_timer(1f));
     }
 
-    private void Evaluate_results()
+    public void Evaluate_results()
     {
-        if(player_choice == ai_choice)
+        if (player_choice == ai_choice)
         {
             Debug.Log("DRAW");
             return;
         }
-        switch(player_choice)
+        switch (player_choice)
         {
             //  IF PLAYER PLAYED ROCK
             case Choice.Rock:
-                if(ai_choice == Choice.Paper)
+                if (ai_choice == Choice.Paper)
                 {
-                    Debug.Log("AI won");
+                    Debug.Log("1");
+                    ScoreManager.AI_Score++;
                     return;
                 }
                 else
                 {
-                    Debug.Log("Player won");
+                    Debug.Log("2");
+                    ScoreManager.Player_Score++;
                     return;
                 }
 
@@ -54,12 +59,14 @@ public class GameManager : MonoBehaviour
             case Choice.Paper:
                 if (ai_choice == Choice.Scissors)
                 {
-                    Debug.Log("AI won");
+                    Debug.Log("3");
+                    ScoreManager.AI_Score++;
                     return;
                 }
                 else
                 {
-                    Debug.Log("Player won");
+                    Debug.Log("4");
+                    ScoreManager.Player_Score++;
                     return;
                 }
 
@@ -67,16 +74,25 @@ public class GameManager : MonoBehaviour
             case Choice.Scissors:
                 if (ai_choice == Choice.Rock)
                 {
-                    Debug.Log("AI won");
+                    Debug.Log("5");
+                    ScoreManager.AI_Score++;
                     return;
                 }
                 else
                 {
-                    Debug.Log("Player won");
+                    Debug.Log("6");
+                    ScoreManager.Player_Score++;
                     return;
                 }
             default:
                 break;
         }
+    }
+
+    IEnumerator Results_and_display_after_timer(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        Evaluate_results();
+        ScoreManager.UpdateScore();
     }
 }

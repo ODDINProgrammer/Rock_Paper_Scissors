@@ -8,7 +8,6 @@ public class AI_anim_control : _AnimationController
     [SerializeField] private Sprite Rock;
     [SerializeField] private Sprite Paper;
     [SerializeField] private Sprite Scissors;
-    [SerializeField] private GameManager GM;
 
     public override void ChangeVisual()
     {
