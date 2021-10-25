@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 public class Pause_panel : MonoBehaviour
 {
     [SerializeField] private AudioMixerGroup Mixer;
+    private float currentVolume = -40;
 
     private void OnEnable()
     {
@@ -19,7 +20,7 @@ public class Pause_panel : MonoBehaviour
     {
         //  ON
         if (enabled)
-            Mixer.audioMixer.SetFloat("Master", 0);
+            Mixer.audioMixer.SetFloat("Master", currentVolume);
 
         //  OFF
         else
@@ -28,6 +29,7 @@ public class Pause_panel : MonoBehaviour
 
     public void AdjustVolume(float volume)
     {
+        currentVolume = volume;
         Mixer.audioMixer.SetFloat("Master", volume);
     }
 }
