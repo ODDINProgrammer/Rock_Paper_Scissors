@@ -1,19 +1,23 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public enum Choice { Rock, Paper, Scissors }
 
+    [Header("Game Objects")]
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject AI_GO;
+    [Header("POP UPS")]
+    [SerializeField] private GameObject Win_popup;
+    [SerializeField] private GameObject Lose_popup;
+    [SerializeField] private GameObject Draw_popup;
 
     private AI AI_Manager;
     internal Score ScoreManager;
 
-    private Choice player_choice;
-    public Choice ai_choice;
+    private Choice Player_choice;
+    public Choice AI_choice;
 
     private void Start()
     {
@@ -22,8 +26,8 @@ public class GameManager : MonoBehaviour
     }
     public void Round_start(Choice received_player_choice)
     {
-        ai_choice = AI_Manager.AI_make_choice();
-        player_choice = received_player_choice;
+        AI_choice = AI_Manager.AI_generate_choice();
+        Player_choice = received_player_choice;
 
         Player.GetComponent<_AnimationController>().Play_Animation();
         AI_GO.GetComponent<_AnimationController>().Play_Animation();
@@ -31,61 +35,58 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Results_and_display_after_timer(1f));
     }
 
-    public void Evaluate_results()
+    private void Evaluate_results()
     {
-        if (player_choice == ai_choice)
+        //  PLAYER LOSE...
+        switch (Player_choice)
         {
-            Debug.Log("DRAW");
-            return;
-        }
-        switch (player_choice)
-        {
-            //  IF PLAYER PLAYED ROCK
+            //  IF PLAYER PLAYED ROCK VS PAPER
             case Choice.Rock:
-                if (ai_choice == Choice.Paper)
+                if (AI_choice == Choice.Paper)
                 {
-                    Debug.Log("1");
+                    Lose_popup.SetActive(true);
                     ScoreManager.AI_Score++;
                     return;
                 }
-                else
-                {
-                    Debug.Log("2");
-                    ScoreManager.Player_Score++;
-                    return;
-                }
+                break;
 
-            //  IF PLAYER PLAYED PAPER
+            //  IF PLAYER PLAYED PAPER VS SCISSORS
             case Choice.Paper:
-                if (ai_choice == Choice.Scissors)
+                if (AI_choice == Choice.Scissors)
                 {
-                    Debug.Log("3");
+                    Lose_popup.SetActive(true);
                     ScoreManager.AI_Score++;
                     return;
                 }
-                else
-                {
-                    Debug.Log("4");
-                    ScoreManager.Player_Score++;
-                    return;
-                }
+                break;
 
-            //  IF PLAYER PLAYED SCISSORS
+            //  IF PLAYER PLAYED SCISSORS VS ROCK
             case Choice.Scissors:
-                if (ai_choice == Choice.Rock)
+                if (AI_choice == Choice.Rock)
                 {
-                    Debug.Log("5");
+                    Lose_popup.SetActive(true);
                     ScoreManager.AI_Score++;
                     return;
                 }
-                else
-                {
-                    Debug.Log("6");
-                    ScoreManager.Player_Score++;
-                    return;
-                }
+                break;
+
             default:
                 break;
+        }
+
+        //  DRAW
+        if (Player_choice == AI_choice)
+        {
+            Draw_popup.SetActive(true);
+            return;
+        }
+
+        //  PLAYER WIN
+        else
+        {
+            Win_popup.SetActive(true);
+            ScoreManager.Player_Score++;
+            return;
         }
     }
 

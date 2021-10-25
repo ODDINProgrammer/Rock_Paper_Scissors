@@ -5,7 +5,7 @@ public class AI : MonoBehaviour
     [SerializeField] private GameObject AI_GO;
     GameManager.Choice AI_choice;
 
-    public GameManager.Choice AI_make_choice()
+    public GameManager.Choice AI_generate_choice()
     {
         int random = Random.Range(0, 3);
 

@@ -3,12 +3,14 @@ using UnityEngine.UI;
 
 public class _AnimationController : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-    [SerializeField] public Image visual;
-    [SerializeField] public Image prepare_new_visual;
-    [SerializeField] public Sprite defaul_visual;
+    [Header("Visuals")]
+    public Image visual;
+    public Image prepare_new_visual;
+    [SerializeField] private Sprite defaul_visual;
+    [Header("=========================")]
     [SerializeField] private GameObject Selection_Blocker;
     [SerializeField] internal GameManager GM;
+    [SerializeField] private Animator animator;
 
     private void Start()
     {

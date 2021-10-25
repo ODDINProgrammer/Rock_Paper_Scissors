@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AI_anim_control : _AnimationController
 {
@@ -11,7 +9,7 @@ public class AI_anim_control : _AnimationController
 
     public override void ChangeVisual()
     {
-        switch(GM.ai_choice)
+        switch(GM.AI_choice)
         {
             //  CHANGE TO ROCK
             case GameManager.Choice.Rock:
